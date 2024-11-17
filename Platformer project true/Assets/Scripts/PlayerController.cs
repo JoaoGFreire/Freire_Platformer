@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public Rigidbody2D rb;
+    public float velocity;
     public enum FacingDirection
     {
         left, right
@@ -20,13 +22,27 @@ public class PlayerController : MonoBehaviour
     {
         //The input from the player needs to be determined and then passed in the to the MovementUpdate which should
         //manage the actual movement of the character.
-        Vector2 playerInput = new Vector2();
+        Vector2 input = Vector2.zero;
+        if (Input.GetKey(KeyCode.D))
+        {
+            input += new Vector2(1, 0);
+        }
+        if(Input.GetKey(KeyCode.A)) 
+        {
+            input += new Vector2(-1, 0);
+        }
+        Vector2 playerInput = input;
         MovementUpdate(playerInput);
     }
 
     private void MovementUpdate(Vector2 playerInput)
     {
-
+        if(playerInput.x> 0)
+        {
+            rb.AddForce(transform.right * velocity);
+            Debug.Log("test");
+        }
+        else if(playerInput.x< 0) { rb.AddForce(-transform.right * velocity); }
     }
 
     //acceleration
