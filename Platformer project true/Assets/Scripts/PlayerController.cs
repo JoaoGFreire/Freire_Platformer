@@ -6,6 +6,8 @@ public class PlayerController : MonoBehaviour
 {
     public Rigidbody2D rb;
     public float velocity;
+    Vector2 input;
+    bool moving;
     public enum FacingDirection
     {
         left, right
@@ -22,17 +24,27 @@ public class PlayerController : MonoBehaviour
     {
         //The input from the player needs to be determined and then passed in the to the MovementUpdate which should
         //manage the actual movement of the character.
-        Vector2 input = Vector2.zero;
+        input = Vector2.zero;
         if (Input.GetKey(KeyCode.D))
         {
+            moving = true;
             input += new Vector2(1, 0);
         }
-        if(Input.GetKey(KeyCode.A)) 
+        else if(Input.GetKey(KeyCode.A)) 
         {
+            moving = true;
             input += new Vector2(-1, 0);
+        }
+        else
+        {
+            moving = false;
         }
         Vector2 playerInput = input;
         MovementUpdate(playerInput);
+        //IsGrounded();
+        //IsWalking();
+
+        Debug.Log(IsWalking());
     }
 
     private void MovementUpdate(Vector2 playerInput)
@@ -51,7 +63,15 @@ public class PlayerController : MonoBehaviour
 
     public bool IsWalking()
     {
-        return false;
+        if(moving)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+        
     }
     public bool IsGrounded()
     {
@@ -60,6 +80,11 @@ public class PlayerController : MonoBehaviour
 
     public FacingDirection GetFacingDirection()
     {
-        return FacingDirection.left;
+       if(input.x < 0)
+        {
+            return FacingDirection.left;
+        } 
+       else { return FacingDirection.right; }
+     
     }
 }
