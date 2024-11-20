@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -8,6 +9,15 @@ public class PlayerController : MonoBehaviour
     public float velocity;
     Vector2 input;
     bool moving;
+    public Transform raycastStart;
+    private Rigidbody2D Rigidbod;
+
+    public float maxSpeed;
+    public float TimeToReachMaxSpeed;
+    public LayerMask groundLayerMask;
+
+    private float acceleration;
+
     public enum FacingDirection
     {
         left, right
@@ -16,7 +26,8 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        acceleration = maxSpeed / TimeToReachMaxSpeed;
+        //Rigidbod = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -39,9 +50,11 @@ public class PlayerController : MonoBehaviour
         {
             moving = false;
         }
-        
-
-        Debug.Log(rb.velocity.y);
+        if (IsGrounded())
+        {
+            Debug.Log("grounded");
+        }
+        //Debug.Log(rb.velocity.y);
     }
     private void FixedUpdate()
     {
@@ -51,6 +64,21 @@ public class PlayerController : MonoBehaviour
 
     private void MovementUpdate(Vector2 playerInput)
     {
+
+        //Vector2 currentVelocity = Rigidbod.velocity;
+        //if (Input.GetKey(KeyCode.LeftArrow))
+        //{
+        //    currentVelocity += acceleration * Vector2.left * Time.deltaTime;
+        //}
+        //if (Input.GetKey(KeyCode.RightArrow))
+        //{
+        //    currentVelocity += acceleration * Vector2.right * Time.deltaTime;
+        //}
+        //Rigidbod.velocity = currentVelocity;
+        
+        
+        
+        
         if(playerInput.x> 0)
         {
             rb.AddForce(transform.right * velocity);
@@ -77,11 +105,15 @@ public class PlayerController : MonoBehaviour
     }
     public bool IsGrounded()
     {
-        //if(rb.velocity.y != 0)
-        //{
-        //    return false;
-        //}
-        return true;
+        //LayerMask layer = LayerMask.GetMask("Ground");
+        //Vector3 downward = raycastStart.TransformDirection(Vector3.down) * 0.8f;
+        //Debug.DrawRay(raycastStart.position,downward , Color.red);
+        if (Physics2D.Raycast(transform.position, -transform.up, 1,groundLayerMask))
+        {
+            //Debug.Log("its touching");
+            return true;
+        }
+        return false;
     }
 
     public FacingDirection GetFacingDirection()
