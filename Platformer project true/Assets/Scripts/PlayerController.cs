@@ -12,11 +12,20 @@ public class PlayerController : MonoBehaviour
     public Transform raycastStart;
     private Rigidbody2D Rigidbod;
 
+
+    public float apexHeight;
+    public float apexTime;
+
+
+
     public float maxSpeed;
     public float TimeToReachMaxSpeed;
+    public float timetoDecelerate;
+
     public LayerMask groundLayerMask;
 
     private float acceleration;
+    private float deceleration;
 
     public enum FacingDirection
     {
@@ -27,6 +36,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         acceleration = maxSpeed / TimeToReachMaxSpeed;
+        deceleration = maxSpeed / timetoDecelerate;
         //Rigidbod = GetComponent<Rigidbody2D>();
     }
 
@@ -50,10 +60,17 @@ public class PlayerController : MonoBehaviour
         {
             moving = false;
         }
-        if (IsGrounded())
+
+        float Gravity = -2 * apexHeight / (Mathf.Pow(apexTime, 2));
+        float jumpVelocity = 2 * apexHeight / apexTime;
+
+        rb.AddForce(-transform.up * (-Gravity));
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log("grounded");
+            rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
         }
+
+
         //Debug.Log(rb.velocity.y);
     }
     private void FixedUpdate()

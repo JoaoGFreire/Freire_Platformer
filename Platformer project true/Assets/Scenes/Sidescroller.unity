@@ -1725,10 +1725,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 1433354318}
-  velocity: 10
+  velocity: 100
   raycastStart: {fileID: 479263353}
+  apexHeight: 25
+  apexTime: 5
   maxSpeed: 0
   TimeToReachMaxSpeed: 0
+  timetoDecelerate: 0
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 64
