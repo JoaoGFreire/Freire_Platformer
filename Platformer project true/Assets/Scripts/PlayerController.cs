@@ -25,26 +25,28 @@ public class PlayerController : MonoBehaviour
         //The input from the player needs to be determined and then passed in the to the MovementUpdate which should
         //manage the actual movement of the character.
         input = Vector2.zero;
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.D)) //if player inputed key D, sets the input vector to be 1,0 signifying that it is moving right
         {
-            moving = true;
+            moving = true; //sets the moving boolean to true to show that its moving
             input += new Vector2(1, 0);
         }
-        else if(Input.GetKey(KeyCode.A)) 
+        else if(Input.GetKey(KeyCode.A)) //if player input key A, sets the input vector to be -1,0 signifying that it is moving left
         {
-            moving = true;
+            moving = true; //sets the moving bollean to true to show that its moving
             input += new Vector2(-1, 0);
         }
         else
         {
             moving = false;
         }
-        Vector2 playerInput = input;
-        MovementUpdate(playerInput);
-        //IsGrounded();
-        //IsWalking();
+        
 
-        Debug.Log(IsWalking());
+        Debug.Log(rb.velocity.y);
+    }
+    private void FixedUpdate()
+    {
+        Vector2 playerInput = input;
+        MovementUpdate(input);
     }
 
     private void MovementUpdate(Vector2 playerInput)
@@ -75,7 +77,11 @@ public class PlayerController : MonoBehaviour
     }
     public bool IsGrounded()
     {
-        return false;
+        //if(rb.velocity.y != 0)
+        //{
+        //    return false;
+        //}
+        return true;
     }
 
     public FacingDirection GetFacingDirection()
