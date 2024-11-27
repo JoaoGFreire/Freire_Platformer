@@ -32,8 +32,12 @@ public class PlayerController : MonoBehaviour
     public float terminalVelocity;
     public float coyoteTime;
     private float CoyoteTimer;
+    
+    
     public float apexHeight;
     public float apexTime;
+
+
     public enum FacingDirection
     {
         left, right
@@ -46,8 +50,9 @@ public class PlayerController : MonoBehaviour
         deceleration = maxSpeed / timetoDecelerate;
 
 
-
+        //equation for gravity. negative 2 times the apex height divided by the apex time to the power of two
         Gravity = -2 * apexHeight / (Mathf.Pow(apexTime, 2));
+        //equation for the jump velocity. two times the apex height divided by the apex time
         jumpVelocity = 2 * apexHeight / apexTime;
 
        
@@ -77,12 +82,13 @@ public class PlayerController : MonoBehaviour
         }
 
         
-
+        //gravity force applied on the player
         rb.AddForce(-transform.up * (-Gravity));
+
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             input += new Vector2(0, 1);
-            //rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
         }
 
         MovementUpdateVertical(input);
@@ -123,25 +129,28 @@ public class PlayerController : MonoBehaviour
     
     public void MovementUpdateVertical(Vector2 playerInput)
     {
-        if (CoyoteTimer  > 0f && playerInput.y > 0)
+        if (CoyoteTimer  > 0 && playerInput.y > 0) //if the 0.2 seconds granted by the coyote time have yet to pass and player input is right                               
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
             CoyoteTimer = 0f;
         }
 
+        //checks whether the current vertical velocity is greater than the terminal velocity
         if (rb.velocity.y < terminalVelocity)
         {
+            //if it is then set the vertical velocity to be the terminal velocity
             rb.velocity = new Vector2(rb.velocity.x, terminalVelocity);
         }
     }
 
     private void CoyoteTimeController()
     {
+        //if it is grounded it will reset the counter
         if(IsGrounded())
         {
             CoyoteTimer = coyoteTime;
         }
-        else
+        else //if it isnt it will start the countdown
         {
             CoyoteTimer -= Time.deltaTime;
         }
