@@ -13,8 +13,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D Rigidbod;
 
 
-    public float apexHeight;
-    public float apexTime;
+    
 
 
 
@@ -33,7 +32,8 @@ public class PlayerController : MonoBehaviour
     public float terminalVelocity;
     public float coyoteTime;
     private float CoyoteTimer;
-
+    public float apexHeight;
+    public float apexTime;
     public enum FacingDirection
     {
         left, right
@@ -44,6 +44,8 @@ public class PlayerController : MonoBehaviour
     {
         acceleration = maxSpeed / TimeToReachMaxSpeed;
         deceleration = maxSpeed / timetoDecelerate;
+
+
 
         Gravity = -2 * apexHeight / (Mathf.Pow(apexTime, 2));
         jumpVelocity = 2 * apexHeight / apexTime;
@@ -84,6 +86,7 @@ public class PlayerController : MonoBehaviour
         }
 
         MovementUpdateVertical(input);
+        CoyoteTimeController();
 
     }
     private void FixedUpdate()
@@ -120,9 +123,10 @@ public class PlayerController : MonoBehaviour
     
     public void MovementUpdateVertical(Vector2 playerInput)
     {
-        if (IsGrounded() && playerInput.y > 0)
+        if (CoyoteTimer  > 0f && playerInput.y > 0)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
+            CoyoteTimer = 0f;
         }
 
         if (rb.velocity.y < terminalVelocity)
@@ -131,6 +135,17 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void CoyoteTimeController()
+    {
+        if(IsGrounded())
+        {
+            CoyoteTimer = coyoteTime;
+        }
+        else
+        {
+            CoyoteTimer -= Time.deltaTime;
+        }
+    }
     //acceleration
     //velocity
     //is velocity greater than 0
