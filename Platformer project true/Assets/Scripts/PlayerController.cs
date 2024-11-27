@@ -196,7 +196,7 @@ public class PlayerController : MonoBehaviour
     
     public void MovementUpdateVertical(Vector2 playerInput)
     {
-        if (CoyoteTimer  > 0 && jumping && isgrounded) //if the 0.2 seconds granted by the coyote time have yet to pass and player input is right                               
+        if (CoyoteTimer  > 0 && jumping) //if the 0.2 seconds granted by the coyote time have yet to pass and player input is right                               
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
             CoyoteTimer = 0f;
