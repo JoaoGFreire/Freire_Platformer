@@ -27,6 +27,13 @@ public class PlayerController : MonoBehaviour
     private float acceleration;
     private float deceleration;
 
+    //Week 11 Journal
+    float Gravity;
+    float jumpVelocity;
+    public float terminalVelocity;
+    public float coyoteTime;
+    private float CoyoteTimer;
+
     public enum FacingDirection
     {
         left, right
@@ -37,6 +44,12 @@ public class PlayerController : MonoBehaviour
     {
         acceleration = maxSpeed / TimeToReachMaxSpeed;
         deceleration = maxSpeed / timetoDecelerate;
+
+        Gravity = -2 * apexHeight / (Mathf.Pow(apexTime, 2));
+        jumpVelocity = 2 * apexHeight / apexTime;
+
+       
+
         //Rigidbod = GetComponent<Rigidbody2D>();
     }
 
@@ -61,17 +74,17 @@ public class PlayerController : MonoBehaviour
             moving = false;
         }
 
-        float Gravity = -2 * apexHeight / (Mathf.Pow(apexTime, 2));
-        float jumpVelocity = 2 * apexHeight / apexTime;
+        
 
         rb.AddForce(-transform.up * (-Gravity));
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
+            input += new Vector2(0, 1);
+            //rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
         }
 
+        MovementUpdateVertical(input);
 
-        //Debug.Log(rb.velocity.y);
     }
     private void FixedUpdate()
     {
@@ -102,6 +115,20 @@ public class PlayerController : MonoBehaviour
             Debug.Log("test");
         }
         else if(playerInput.x< 0) { rb.AddForce(-transform.right * velocity); }
+
+    }
+    
+    public void MovementUpdateVertical(Vector2 playerInput)
+    {
+        if (IsGrounded() && playerInput.y > 0)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
+        }
+
+        if (rb.velocity.y < terminalVelocity)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, terminalVelocity);
+        }
     }
 
     //acceleration
@@ -122,9 +149,6 @@ public class PlayerController : MonoBehaviour
     }
     public bool IsGrounded()
     {
-        //LayerMask layer = LayerMask.GetMask("Ground");
-        //Vector3 downward = raycastStart.TransformDirection(Vector3.down) * 0.8f;
-        //Debug.DrawRay(raycastStart.position,downward , Color.red);
         if (Physics2D.Raycast(transform.position, -transform.up, 1,groundLayerMask))
         {
             //Debug.Log("its touching");
