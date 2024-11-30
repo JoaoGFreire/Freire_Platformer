@@ -41,7 +41,10 @@ public class PlayerController : MonoBehaviour
     public int health = 10;
 
     public bool jumping;
-    bool isgrounded;
+
+    //Final Assignment 
+    private float DoubleJumpCounter = 0;
+ 
     public enum FacingDirection
     {
         left, right
@@ -73,7 +76,6 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        isgrounded = IsGrounded();
         //The input from the player needs to be determined and then passed in the to the MovementUpdate which should
         //manage the actual movement of the character.
         input = Vector2.zero;
@@ -95,12 +97,16 @@ public class PlayerController : MonoBehaviour
         previousCharacterState = currentCharacterState;
 
 
-        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
+        if (Input.GetKeyDown(KeyCode.Space) /*&& IsGrounded()*/)
         {
             jumping = true;
         }
+        if (IsGrounded())
+        {
+            DoubleJumpCounter = 0;
+        }
 
-
+        Debug.Log(DoubleJumpCounter);
 
 
         switch (currentCharacterState)
@@ -159,32 +165,11 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         Vector2 playerInput = input;
-        //if (isJumping)
-        //{
-        //    //Trigger our jump logic
-        //    Debug.Log("Player is jumping woohoo!!");
-        //    isJumping = false;
-        //}
         MovementUpdate(input);
     }
 
     private void MovementUpdate(Vector2 playerInput)
     {
-
-        //Vector2 currentVelocity = Rigidbod.velocity;
-        //if (Input.GetKey(KeyCode.LeftArrow))
-        //{
-        //    currentVelocity += acceleration * Vector2.left * Time.deltaTime;
-        //}
-        //if (Input.GetKey(KeyCode.RightArrow))
-        //{
-        //    currentVelocity += acceleration * Vector2.right * Time.deltaTime;
-        //}
-        //Rigidbod.velocity = currentVelocity;
-        
-        
-        
-        
         if(playerInput.x> 0)
         {
             rb.AddForce(transform.right * velocity);
@@ -196,11 +181,12 @@ public class PlayerController : MonoBehaviour
     
     public void MovementUpdateVertical(Vector2 playerInput)
     {
-        if (CoyoteTimer  > 0 && jumping) //if the 0.2 seconds granted by the coyote time have yet to pass and player input is right                               
+        if (/*oyoteTimer  > 0 &&*/ jumping && DoubleJumpCounter < 1) //if the 0.2 seconds granted by the coyote time have yet to pass and player input is right                               
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
             CoyoteTimer = 0f;
             jumping = false;
+            DoubleJumpCounter++;
         }
 
 
