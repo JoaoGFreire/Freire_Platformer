@@ -44,6 +44,10 @@ public class PlayerController : MonoBehaviour
 
     //Final Assignment 
     private float DoubleJumpCounter = 0;
+
+    public float DashStrength;
+    public float Dashtimer;
+    bool dashed = false;
  
     public enum FacingDirection
     {
@@ -160,11 +164,13 @@ public class PlayerController : MonoBehaviour
 
         MovementUpdateVertical(input);
         CoyoteTimeController();
+        DashTime();
 
     }
     private void FixedUpdate()
     {
         Vector2 playerInput = input;
+        Dash();
         MovementUpdate(input);
     }
 
@@ -210,6 +216,37 @@ public class PlayerController : MonoBehaviour
             CoyoteTimer -= Time.deltaTime;
         }
     }
+
+    public void Dash()
+    {
+        if (Input.GetKey(KeyCode.LeftShift) && dashed == false)
+        {
+            dashed = true;
+            if(GetFacingDirection() == FacingDirection.left)
+            {
+                rb.AddForce(-transform.right * DashStrength);
+                
+            }
+            if(GetFacingDirection() == FacingDirection.right)
+            {
+                rb.AddForce(transform.right * DashStrength);
+            }
+        }
+    }
+
+    private void DashTime()
+    {
+        if (dashed)
+        {
+            Dashtimer += Time.deltaTime;
+            if(Dashtimer >= 2)
+            {
+                dashed = false;
+                Dashtimer = 0;
+            }
+        }
+    }
+
    
 
     public bool IsWalking()
