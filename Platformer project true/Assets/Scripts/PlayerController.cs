@@ -48,6 +48,8 @@ public class PlayerController : MonoBehaviour
     public float DashStrength;
     public float Dashtimer;
     bool dashed = false;
+
+
  
     public enum FacingDirection
     {
@@ -247,7 +249,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-   
+    public void KnockBack(Vector3 Direction)
+    {
+        rb.AddForce(Direction * 20);
+    }
 
     public bool IsWalking()
     {
