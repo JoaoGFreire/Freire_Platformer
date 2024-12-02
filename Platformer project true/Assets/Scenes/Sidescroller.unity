@@ -1738,6 +1738,11 @@ MonoBehaviour:
   apexHeight: 25
   apexTime: 5
   health: 10
+  jumping: 0
+  DashStrength: 100
+  Dashtimer: 0
+  currentCharacterState: 0
+  previousCharacterState: 0
 --- !u!4 &1433354315
 Transform:
   m_ObjectHideFlags: 0
