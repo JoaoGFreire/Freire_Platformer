@@ -24,12 +24,16 @@ public class BombController : MonoBehaviour
     {
         PlayerPosition = player.transform.position;
         //rb.AddForce(new Vector2(20, 20));
-        Explosion();
+       
         Debug.DrawLine(transform.position, PlayerPosition);
+    }
+    private void FixedUpdate()
+    {
+        Explosion();
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //rb.constraints =  RigidbodyConstraints2D.FreezePosition;
+        rb.constraints =  RigidbodyConstraints2D.FreezePosition;
     }
     private void OnTriggerStay2D(Collider2D collision)
     {

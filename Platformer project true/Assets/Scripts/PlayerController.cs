@@ -251,7 +251,7 @@ public class PlayerController : MonoBehaviour
 
     public void KnockBack(Vector3 Direction)
     {
-        rb.AddForce(Direction * 20);
+        rb.AddForce(Direction * 100);
     }
 
     public bool IsWalking()
