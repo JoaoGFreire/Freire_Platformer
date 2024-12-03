@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -8,24 +9,28 @@ public class BombController : MonoBehaviour
 {
     // Start is called before the first frame update
     private Rigidbody2D rb;
+    public SpriteRenderer sprite;
     private bool inRange = false;
-    public GameObject player;
-    public float KnockBackForce;
+    private bool collided = false;
+    private GameObject player;
+    
+    private float timer;
     Vector3 PlayerPosition;
     Vector3 DistanceVector;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        //sprite = GetComponent<SpriteRenderer>();
         rb.AddForce(new Vector2(250, 250));
     }
 
     // Update is called once per frame
     void Update()
     {
-        PlayerPosition = player.transform.position;
+        //PlayerPosition = player.transform.position;
         //rb.AddForce(new Vector2(20, 20));
        
-        Debug.DrawLine(transform.position, PlayerPosition);
+       // Debug.DrawLine(transform.position, PlayerPosition);
     }
     private void FixedUpdate()
     {
@@ -34,11 +39,15 @@ public class BombController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         rb.constraints =  RigidbodyConstraints2D.FreezePosition;
+        collided = true;
+
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
+            player = collision.gameObject;
+            Debug.DrawLine(transform.position, player.transform.position);
             inRange = true;
             Debug.Log("in Range");
         }
@@ -51,9 +60,23 @@ public class BombController : MonoBehaviour
     }
     public void Explosion()
     {
-        if (inRange)
+        
+        if(collided)
         {
-            player.SendMessage("KnockBack", PlayerPosition - transform.position);
+            timer += Time.deltaTime;
+            if (timer >= 2)
+            {
+                //Debug.Log("test");
+                sprite.color = Color.red;
+                if (inRange)
+                {
+                    player.SendMessage("KnockBack", player.transform.position  - transform.position);
+                }
+            }
+            if(timer >= 2.1)
+            {
+                Object.Destroy(gameObject);
+            }
         }
     }
 

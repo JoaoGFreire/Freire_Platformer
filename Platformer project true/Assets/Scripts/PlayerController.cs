@@ -49,6 +49,8 @@ public class PlayerController : MonoBehaviour
     public float Dashtimer;
     bool dashed = false;
 
+    public Transform BombSpawn;
+    public GameObject Bomb;
 
  
     public enum FacingDirection
@@ -167,6 +169,7 @@ public class PlayerController : MonoBehaviour
         MovementUpdateVertical(input);
         CoyoteTimeController();
         DashTime();
+        UseBomb();
 
     }
     private void FixedUpdate()
@@ -181,7 +184,7 @@ public class PlayerController : MonoBehaviour
         if(playerInput.x> 0)
         {
             rb.AddForce(transform.right * velocity);
-            Debug.Log("test");
+            //Debug.Log("test");
         }
         else if(playerInput.x< 0) { rb.AddForce(-transform.right * velocity); }
 
@@ -252,6 +255,14 @@ public class PlayerController : MonoBehaviour
     public void KnockBack(Vector3 Direction)
     {
         rb.AddForce(Direction * 100);
+    }
+    
+    public void UseBomb()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Instantiate(Bomb, BombSpawn.position, Quaternion.identity);
+        }
     }
 
     public bool IsWalking()
