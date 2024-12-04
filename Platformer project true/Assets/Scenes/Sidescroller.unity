@@ -1758,9 +1758,9 @@ MonoBehaviour:
   rb: {fileID: 1433354318}
   velocity: 25
   raycastStart: {fileID: 479263353}
-  maxSpeed: 0
-  TimeToReachMaxSpeed: 0
-  timetoDecelerate: 0
+  maxSpeed: 25
+  TimeToReachMaxSpeed: 1
+  timetoDecelerate: 1
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 64
