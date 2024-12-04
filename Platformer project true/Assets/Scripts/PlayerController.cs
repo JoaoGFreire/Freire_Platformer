@@ -78,7 +78,6 @@ public class PlayerController : MonoBehaviour
 
        
 
-        //Rigidbod = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -114,7 +113,6 @@ public class PlayerController : MonoBehaviour
             DoubleJumpCounter = 0;
         }
 
-        Debug.Log(DoubleJumpCounter);
 
 
         switch (currentCharacterState)
@@ -181,15 +179,21 @@ public class PlayerController : MonoBehaviour
 
     private void MovementUpdate(Vector2 playerInput)
     {
+        Vector2 Velocity = rb.velocity;
         if(playerInput.x> 0)
         {
-            rb.AddForce(transform.right * velocity);
+            Velocity += Vector2.right * acceleration * Time.deltaTime;
+            //rb.AddForce(transform.right * velocity);
             //Debug.Log("test");
         }
-        else if(playerInput.x< 0) { rb.AddForce(-transform.right * velocity); }
+        else if(playerInput.x< 0) 
+        {
+            Velocity += Vector2.left * acceleration * Time.deltaTime;
+        }
+        rb.velocity = Velocity;
 
     }
-    
+    //rb.AddForce(-transform.right * velocity);
     public void MovementUpdateVertical(Vector2 playerInput)
     {
         if (/*oyoteTimer  > 0 &&*/ jumping && DoubleJumpCounter < 1) //if the 0.2 seconds granted by the coyote time have yet to pass and player input is right                               

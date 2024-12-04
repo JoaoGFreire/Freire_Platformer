@@ -20,17 +20,14 @@ public class BombController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        //sprite = GetComponent<SpriteRenderer>();
+        
         rb.AddForce(new Vector2(250, 250));
     }
 
     // Update is called once per frame
     void Update()
     {
-        //PlayerPosition = player.transform.position;
-        //rb.AddForce(new Vector2(20, 20));
-       
-       // Debug.DrawLine(transform.position, PlayerPosition);
+        
     }
     private void FixedUpdate()
     {
