@@ -196,7 +196,7 @@ public class PlayerController : MonoBehaviour
     //rb.AddForce(-transform.right * velocity);
     public void MovementUpdateVertical(Vector2 playerInput)
     {
-        if (/*oyoteTimer  > 0 &&*/ jumping && DoubleJumpCounter < 1) //if the 0.2 seconds granted by the coyote time have yet to pass and player input is right                               
+        if ( jumping && DoubleJumpCounter < 1)                            
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
             CoyoteTimer = 0f;
@@ -228,15 +228,16 @@ public class PlayerController : MonoBehaviour
 
     public void Dash()
     {
-        if (Input.GetKey(KeyCode.LeftShift) && dashed == false)
+        if (Input.GetKey(KeyCode.LeftShift) && dashed == false) //checks if the player inputed the right key and wether dash is still on cooldwon
         {
-            dashed = true;
+            dashed = true; //sets dashed to be true in order for the dash to go into cooldown.
             if(GetFacingDirection() == FacingDirection.left)
-            {
+            {                                                  //if dash is not on cooldown then the code will check the direction the player is facing
+                                                               //and add a horizontal force in that direction
                 rb.AddForce(-transform.right * DashStrength);
                 
             }
-            if(GetFacingDirection() == FacingDirection.right)
+            if(GetFacingDirection() == FacingDirection.right) //same thing as above but in the opposite direction.
             {
                 rb.AddForce(transform.right * DashStrength);
             }

@@ -15,8 +15,6 @@ public class BombController : MonoBehaviour
     private GameObject player;
     
     private float timer;
-    Vector3 PlayerPosition;
-    Vector3 DistanceVector;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -41,7 +39,7 @@ public class BombController : MonoBehaviour
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player")) //checks if object inside of the trigger is the player.
         {
             player = collision.gameObject;
             Debug.DrawLine(transform.position, player.transform.position);
@@ -60,19 +58,19 @@ public class BombController : MonoBehaviour
         
         if(collided)
         {
-            timer += Time.deltaTime;
-            if (timer >= 2)
+            timer += Time.deltaTime; //starts timer
+            if (timer >= 2) //time to explode
             {
                 //Debug.Log("test");
-                sprite.color = Color.red;
+                sprite.color = Color.red; //changes color of sprite to red
                 if (inRange)
                 {
-                    player.SendMessage("KnockBack", player.transform.position  - transform.position);
+                    player.SendMessage("KnockBack", player.transform.position  - transform.position); //tells the player to be knockedback
                 }
             }
             if(timer >= 2.1)
             {
-                Object.Destroy(gameObject);
+                Object.Destroy(gameObject); //destroys the game object
             }
         }
     }
